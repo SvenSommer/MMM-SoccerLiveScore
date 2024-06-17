@@ -29,6 +29,7 @@ Module.register('MMM-SoccerLiveScore', {
     showScorers: true,
     showDetails: true,
     logosToInvert: [30001132, 30000991, 30000145], // Juventus team_id in 1, 23, and 328 leagues
+    listEntryMaximumGoals: 2,
   },
 
   getStyles: function () {
@@ -91,6 +92,7 @@ Module.register('MMM-SoccerLiveScore', {
       showScorers: this.config.showScorers,
       showStandings: this.config.showStandings,
       showDetails: this.config.showDetails,
+      listEntryMaximumGoals: this.config.listEntryMaximumGoals,
     };
     this.sendSocketNotification(this.name + '-CONFIG', config);
   },
@@ -475,6 +477,8 @@ Module.register('MMM-SoccerLiveScore', {
         wrapper.appendChild(table);
 
         scorer.scorers.forEach((s) => {
+          if (Number(s.goals) < scorer.scorers[this.config.listEntryMaximumGoals].goals)
+            return
           const tableRow = document.createElement('tr');
 
           const position = document.createElement('td');
